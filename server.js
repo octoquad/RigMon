@@ -1,3 +1,4 @@
+const _ = require('lodash')
 const config = require('./config.json')
 const TelegramBot = require('node-telegram-bot-api')
 const claymore = require('./claymore.js')
@@ -106,37 +107,41 @@ bot.onText(/\/pools/, (msg) => {
 })
 
 bot.onText(/\/status/, (msg) => {
-  var msgtext = '<pre>STATISTICS \n'
+  var message = '<b>Statistics</b>\n'
   var rigs = Object.assign({}, all)
+
+  if (_.isEmpty(rigs)) {
+    bot.sendMessage(msg.chat.id, 'Mining rigs are not present as yet.')
+
+    return
+  }
 
   for (var f in rigs) {
     var rig = rigs[f]
 
-    msgtext = msgtext + f + ':' + rig.name + ' | '
+    message = message + '<b>' + rig.name + '</b> \n'
 
-    if (rig.error === null) {
-      var time = moment.unix(rig.uptime)
-      var up = moment(time).toNow(true)
+    if (!_.isEmpty(rigs)) {
+      var primaryHashRate = (rig.hash / 1000).toFixed(2)
+      var primaryHashSymbol = (rig.hash > 10000) ? 'MH/s' : 'H/s'
+      var secondaryHashRate = (rig.hash2 > 0) ? (rig.hash2 / 1000).toFixed(2) : 0
+      var secondaryHashSymbol = (rig.hash2 > 10000) ? 'MH/s' : 'H/s'
+      var uptime = moment.unix(rig.uptime).toNow(true)
 
-      if (rig.hash2 > 0) {
-        msgtext = msgtext + (rig.hash / 1000).toFixed(2) + ' MH/s, ' + (rig.hash2 / 1000).toFixed(2) + 'MH/s, up:' + up + '\n'
-      } else {
-        if (rig.hash > 10000) {
-          msgtext = msgtext + (rig.hash / 1000).toFixed(2) + ' MH/s, up:' + up + '\n'
-        } else {
-          msgtext = msgtext + rig.hash + ' H/s, up:' + up + '\n'
-        }
+      message = message + 'Primary Hash Rate: <i>' + primaryHashRate + ' ' + primaryHashSymbol + '</i> \n'
+
+      if (secondaryHashRate > 0) {
+        message = message + 'Secondary Hash Rate: <i>' + secondaryHashRate + ' ' + secondaryHashSymbol + '</i> \n'
       }
+
+      message = message + 'Uptime: <i>' + uptime + '</i>\n'
     } else {
-      time = moment.unix(rig.last_seen)
-      var last = moment(time).fromNow()
-      msgtext = msgtext + rig.error + ', last seen:' + last + '\n'
+      var lastSeen = moment.unix(rig.last_seen).fromNow()
+      message = message + rig.error + ' Last Seen: <i>' + lastSeen + '</i>\n'
     }
   }
 
-  msgtext = msgtext + '</pre>'
-
-  bot.sendMessage(msg.chat.id, msgtext, { parse_mode: 'HTML' })
+  bot.sendMessage(msg.chat.id, message, { parse_mode: 'HTML' })
 })
 
 bot.onText(/\/profit/, (msg) => {
