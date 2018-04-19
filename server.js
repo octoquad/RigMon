@@ -423,6 +423,16 @@ bot.onText(/\/history/, (msg) => {
   var timeLastWeek = timeNow - 604800
   var tLast = new Date(timeLastWeek * 1000).toISOString()
   var msgtext
+  var configured = {
+    bittrex: config.bittrex.key.length > 0,
+    poloniex: config.poloniex.key.length > 0
+  }
+
+  if (!configured.bittrex && !configured.poloniex) {
+    bot.sendMessage(msg.chat.id, 'No Bittrex or Poloniex accounts configured.')
+
+    return
+  }
 
   bittrex.getwithdrawalhistory({}, function (data, err) {
     if (err) {
