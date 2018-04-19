@@ -330,6 +330,16 @@ bot.onText(/\/balances/, (msg) => {
   var e = config.currency_symbol
   var coinpath = 'https://api.coinmarketcap.com/v1/ticker/bitcoin/?convert=' + e
   var price = ''
+  var configured = {
+    bittrex: config.bittrex.key.length > 0,
+    poloniex: config.poloniex.key.length > 0
+  }
+
+  if (!configured.bittrex && !configured.poloniex) {
+    bot.sendMessage(msg.chat.id, 'No Bittrex or Poloniex accounts configured.')
+
+    return
+  }
 
   https.get(coinpath, (res) => {
     res.on('data', (chunk) => {
@@ -343,7 +353,7 @@ bot.onText(/\/balances/, (msg) => {
       var btc = price[0][ccurr]
       var msgtext
 
-      if (config.bittrex.key.length > 0) {
+      if (configured.bittrex) {
         bittrex.getbalances(function (data, err) {
           if (err) {
             console.error(err)
@@ -366,7 +376,7 @@ bot.onText(/\/balances/, (msg) => {
         })
       }
 
-      if (config.poloniex.key.length > 0) {
+      if (configured.poloniex) {
         poloniex.returnCompleteBalances(function (err, data) {
           if (err) {
             console.error(err)
