@@ -14,7 +14,7 @@
     "dependencies": {
         "lodash": "^4.17.5",
         "moment": "^2.22.0",
-        "node-bittrex-api": "^0.7.7",
+        "node-bittrex-api": "^0.7.8",
         "node-telegram-bot-api": "^0.29.0",
         "nonce": "^1.0.4"
     },
