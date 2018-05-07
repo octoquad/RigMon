@@ -294,41 +294,46 @@ bot.onText(/\/profit/, (msg) => {
 })
 
 bot.onText(/\/detailed/, (msg) => {
-  var rigs = Object.assign({}, all)
-  var msgtext = '<pre>DETAILED STATISTICS \n'
+  let rigs = Object.assign({}, all)
+  let message = '<b>Detailed Statistics</b>\n'
 
-  for (var f in rigs) {
-    var rig = rigs[f]
+  if (_.isEmpty(rigs)) {
+    bot.sendMessage(msg.chat.id, 'Mining rigs are not present as yet.')
 
-    msgtext = msgtext + rig.name
+    return
+  }
 
-    if (rig.error == null) {
-      msgtext = msgtext + ' | ' + (rig.hash / rig.power).toFixed(2) + 'H/W\n'
+  for (let f in rigs) {
+    let rig = rigs[f]
+    let gpuCount = 0
 
-      for (var j in rig.gpu) {
-        var gpu = rig.gpu[j]
-        var currency = rig.ver.slice(-3)
+    message += `<b>${rig.name}</b>`
 
-        if (currency === 'EWB') {
-          msgtext = msgtext + '  ' + gpu.hash + ' H/s ' + gpu.temps + 'c ' + gpu.power + 'W ' + (gpu.hash / gpu.power).toFixed(2) + 'H/W\n'
-        }
+    if (!_.isEmpty(rig.error)) {
+      message += ' is offline &#9888;\n'
 
-        if (currency === 'ETH') {
-          msgtext = msgtext + '  ' + (gpu.hash / 1000).toFixed(2) + ' MH/s ' + gpu.temps + 'c ' + gpu.fan + '%\n'
-        }
+      continue
+    }
 
-        if (currency === 'ZEC' || currency === 'XMR') {
-          msgtext = msgtext + '  ' + gpu.hash + ' H/s ' + gpu.temps + 'c ' + gpu.fan + '% ' + '\n'
-        }
-      }
-    } else {
-      msgtext = msgtext + ' | OFF\n'
+    message += ' - ' + (rig.hash / rig.power).toFixed(2) + ' H/W\n'
+
+    for (let i in rig.gpu) {
+      let gpu = rig.gpu[i]
+      let currency = rig.ver.slice(-3)
+      let fanSpeed = (gpu.fan > 0) ? `${gpu.fan}%` : ''
+      let gpuPower = (gpu.power > 0) ? `| ${gpu.power} W` : ''
+      let hashRate = (currency === 'ETH') ? (gpu.hash / 1000).toFixed(2) + ' MH/s' : `${gpu.hash} H/s`
+      let hashPerWatt = (gpu.hash / gpu.power).toFixed(2)
+
+      hashPerWatt = (hashPerWatt > 0) ? ` | ${hashPerWatt} H/W` : ''
+      hashRate = (gpu.hash === 0) ? `<b>&#9888; ${hashRate}</b>` : hashRate
+      ++gpuCount
+
+      message += ` ${gpuCount} (${currency}): ${hashRate} | ${gpu.temps}&#176;C | ${fanSpeed} ${gpuPower} ${hashPerWatt}\n`
     }
   }
 
-  msgtext = msgtext + '</pre>'
-
-  bot.sendMessage(msg.chat.id, msgtext, { parse_mode: 'HTML' })
+  bot.sendMessage(msg.chat.id, message, { parse_mode: 'HTML' })
 })
 
 bot.onText(/\/balances/, (msg) => {
