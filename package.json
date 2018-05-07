@@ -1,26 +1,30 @@
 {
-    "app_name": "RigMon",
-    "bg-script": "server.js",
-    "dom_storage_quota": "10",
-    "main": "server.js",
     "name": "rigmon",
-    "nodejs": true,
+    "description": "Telegram Bot for AMD/NVIDIA cryptocurrency mining rigs",
+    "keywords": [
+        "telegram",
+        "bot",
+        "amd",
+        "nvidia",
+        "cryptocurrency",
+        "gpu",
+        "mining",
+        "ewbf",
+        "claymore",
+        "poloniex",
+        "bittrex"
+    ],
+    "main": "server.js",
+    "bugs": "https://github.com/octoquad/RigMon/issues",
     "version": "0.0.1",
-    "webkit": {},
-    "window": {
-        "id": "rigmon",
-        "title": "rigmon"
-    },
     "dependencies": {
         "lodash": "^4.17.5",
         "moment": "^2.22.0",
         "node-bittrex-api": "^0.7.8",
-        "node-telegram-bot-api": "^0.29.0",
+        "node-telegram-bot-api": "^0.30.0",
         "nonce": "^1.0.4"
     },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/Prayfm/RigMon.git"
-    },
-    "license": "MIT"
+    "repository": "github:octoquad/RigMon.git",
+    "license": "MIT",
+    "standard": {}
 }
