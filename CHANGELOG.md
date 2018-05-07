@@ -4,6 +4,11 @@
 
 ### Enhancements
 
+#### Help
+
+* `/help` formatting has been updated. Links are now clickable/tappable if commands are registered with the BotFather.
+* Updated the Available commands section and provided a BotFather command list template in the README file.
+
 #### Balances
 * Return "No Bittrex or Poloniex accounts configured." when both Bittrex and Poloniex accounts have not been configured.
 
@@ -16,8 +21,7 @@
 * Statistics are now layed out over multiple lines for mining rigs.
 * If Rigmon has just started and is still fetching data from the remote API and a user requests statistics, we now return "Mining rigs are not present as yet." instead of just a **Statistics** command header.
 
-### Detailed
-
+#### Detailed
 * Removed pre tags for response.
 * Command header is now bold.
 * Offline miners will now show &#9888; e.g. "Miner X is offline &#9888;"

@@ -172,26 +172,16 @@ Put your API keys here:
     }
 ```
 
-## Available commands ###
+## Available commands
+You can also use the following command list to change the list of available commands for your bot. Chat to the BotFather and use `/setcommands` and paste the text in below. All commands do need to begin with a forward slash e.g. `/status`
 
 ```
-Simple commands:
-
-/status
-Displays the current status of all rigs.
-/detailed
-Displays more information, like temps and power usage (for EWBF).
-/pools
-Displays current pool servers.
-/ip
-Displays current ip addresses of rigs.
-/profit
-Displays current profit taken from whattomine.com, including electricity costs.
-
-Exchange commands (needs an API key):
-
-/balances
-Returns balances for your account.
-/history
-Returns withdrawal and deposit history for the last week.
+balances - Returns balances for your account.
+detailed - Displays more information, like temperature and power usage (EWBF miners only).
+help - Displays available commands.
+history - Returns withdrawal and deposit history for the last week.
+ip - Displays the current IP address of all rigs.
+pools - Displays current pool servers.
+profit - Displays current profit taken from whattomine.com, including electricity costs.
+status - Displays the current status of all miners.
 ```

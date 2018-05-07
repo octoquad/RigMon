@@ -74,7 +74,7 @@ bot.onText(/\/id/, (msg) => {
 })
 
 bot.onText(/\/help/, (msg) => {
-  var commands = '<pre>Available commands:\n/status, /detailed, /pools, /ip, /profit\nExchange commands:\n/balances, /history</pre>'
+  var commands = '<b>Commands</b>\n\nMiners\n/status\n/detailed\n/pools\n/ip\n/profit\n\nExchange\n/balances\n/history'
 
   bot.sendMessage(msg.chat.id, commands, { parse_mode: 'HTML' })
 })
