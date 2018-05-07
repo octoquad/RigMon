@@ -107,7 +107,7 @@ bot.onText(/\/pools/, (msg) => {
 })
 
 bot.onText(/\/status/, (msg) => {
-  var message = '<b>Statistics</b>\n'
+  var message = '<b>Status</b>\n'
   var rigs = Object.assign({}, all)
 
   if (_.isEmpty(rigs)) {
@@ -119,26 +119,28 @@ bot.onText(/\/status/, (msg) => {
   for (var f in rigs) {
     var rig = rigs[f]
 
-    message = message + '<b>' + rig.name + '</b> \n'
+    message = message + '<b>' + rig.name + '</b>\n'
 
-    if (!_.isEmpty(rigs)) {
-      var primaryHashRate = (rig.hash / 1000).toFixed(2)
-      var primaryHashSymbol = (rig.hash > 10000) ? 'MH/s' : 'H/s'
-      var secondaryHashRate = (rig.hash2 > 0) ? (rig.hash2 / 1000).toFixed(2) : 0
-      var secondaryHashSymbol = (rig.hash2 > 10000) ? 'MH/s' : 'H/s'
-      var uptime = moment.unix(rig.uptime).toNow(true)
-
-      message = message + 'Primary Hash Rate: <i>' + primaryHashRate + ' ' + primaryHashSymbol + '</i> \n'
-
-      if (secondaryHashRate > 0) {
-        message = message + 'Secondary Hash Rate: <i>' + secondaryHashRate + ' ' + secondaryHashSymbol + '</i> \n'
-      }
-
-      message = message + 'Uptime: <i>' + uptime + '</i>\n'
-    } else {
+    if (!_.isEmpty(rig.error)) {
       var lastSeen = moment.unix(rig.last_seen).fromNow()
       message = message + rig.error + ' Last Seen: <i>' + lastSeen + '</i>\n'
+
+      continue
     }
+
+    var primaryHashRate = (rig.hash / 1000).toFixed(2)
+    var primaryHashSymbol = (rig.hash > 10000) ? 'MH/s' : 'H/s'
+    var secondaryHashRate = (rig.hash2 > 0) ? (rig.hash2 / 1000).toFixed(2) : 0
+    var secondaryHashSymbol = (rig.hash2 > 10000) ? 'MH/s' : 'H/s'
+    var uptime = moment.unix(rig.uptime).toNow(true)
+
+    message = message + 'Primary Hash Rate: <i>' + primaryHashRate + ' ' + primaryHashSymbol + '</i>\n'
+
+    if (secondaryHashRate > 0) {
+      message = message + 'Secondary Hash Rate: <i>' + secondaryHashRate + ' ' + secondaryHashSymbol + '</i>\n'
+    }
+
+    message = message + 'Uptime: <i>' + uptime + '</i>\n'
   }
 
   bot.sendMessage(msg.chat.id, message, { parse_mode: 'HTML' })
