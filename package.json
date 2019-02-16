@@ -18,7 +18,7 @@
     "bugs": "https://github.com/octoquad/RigMon/issues",
     "version": "0.0.1",
     "dependencies": {
-        "lodash": "^4.17.5",
+        "lodash": "^4.17.11",
         "moment": "^2.22.0",
         "node-bittrex-api": "^0.8.3",
         "node-telegram-bot-api": "^0.30.0",
